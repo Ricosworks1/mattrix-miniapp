@@ -39,8 +39,21 @@ export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'contacts' | 'add' | 'stats'>('contacts')
+  const [activeTab, setActiveTab] = useState<'contacts' | 'add' | 'stats' | 'base'>('base')
   const [newContactData, setNewContactData] = useState('')
+  const [baseBuilderData, setBaseBuilderData] = useState({
+    email: '',
+    fullName: '',
+    builderTypes: '',
+    buildingOnBase: '',
+    location: '',
+    country: '',
+    baseAmbassador: '',
+    discordUsername: '',
+    telegramUsername: '',
+    twitterUsername: '',
+    walletAddress: ''
+  })
 
   // Fetch contacts
   const fetchContacts = async () => {
@@ -204,6 +217,7 @@ export default function Home() {
         {/* Tab Navigation */}
         <div className="flex bg-gray-50 border-b">
           {[
+            { key: 'base', label: '🔵 Base Builders' },
             { key: 'contacts', label: '👥 Contacts' },
             { key: 'add', label: '➕ Add' },
             { key: 'stats', label: '📊 Stats' }
@@ -224,6 +238,193 @@ export default function Home() {
 
         {/* Content */}
         <div className="p-6">
+          {/* Base Builders Tab */}
+          {activeTab === 'base' && (
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Base Builders Network</h2>
+              
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Email *</label>
+                  <input
+                    type="email"
+                    value={baseBuilderData.email}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, email: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Full Name *</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.fullName}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, fullName: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="Your full name"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Builder Types *</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.builderTypes}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, builderTypes: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="e.g., Frontend Developer, Smart Contract Developer"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Building on Base? *</label>
+                  <select
+                    value={baseBuilderData.buildingOnBase}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, buildingOnBase: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    required
+                  >
+                    <option value="">Select an option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No, but I would like to get involved">No, but I would like to get involved</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Location *</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.location}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, location: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="Your city"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Country *</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.country}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, country: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="Your country"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Base Ambassador? *</label>
+                  <select
+                    value={baseBuilderData.baseAmbassador}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, baseAmbassador: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    required
+                  >
+                    <option value="">Select an option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Discord Username</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.discordUsername}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, discordUsername: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="username#1234"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Telegram Username</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.telegramUsername}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, telegramUsername: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="@username"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Twitter Username</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.twitterUsername}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, twitterUsername: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="@username"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-900">Wallet Address</label>
+                  <input
+                    type="text"
+                    value={baseBuilderData.walletAddress}
+                    onChange={(e) => setBaseBuilderData(prev => ({ ...prev, walletAddress: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    placeholder="0x..."
+                  />
+                </div>
+
+                <button
+                  onClick={async () => {
+                    try {
+                      setLoading(true)
+                      const response = await fetch(`${API_BASE}/base-builders`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          userId: DEMO_USER_ID,
+                          ...baseBuilderData
+                        })
+                      })
+                      
+                      const data = await response.json()
+                      if (data.success) {
+                        alert('Base Builder application submitted successfully!')
+                        // Reset form
+                        setBaseBuilderData({
+                          email: '',
+                          fullName: '',
+                          builderTypes: '',
+                          buildingOnBase: '',
+                          location: '',
+                          country: '',
+                          baseAmbassador: '',
+                          discordUsername: '',
+                          telegramUsername: '',
+                          twitterUsername: '',
+                          walletAddress: ''
+                        })
+                      } else {
+                        alert(data.error || 'Failed to submit application')
+                      }
+                    } catch (error) {
+                      console.error('Error submitting base builder form:', error)
+                      alert('Failed to submit application')
+                    } finally {
+                      setLoading(false)
+                    }
+                  }}
+                  disabled={loading || !baseBuilderData.email || !baseBuilderData.fullName}
+                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? 'Submitting...' : 'Submit Base Builder Application'}
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Contacts Tab */}
           {activeTab === 'contacts' && (
             <div>
@@ -290,7 +491,7 @@ Company: Base Protocol
 Position: Developer
 Email: john@base.org
 Priority: high`}
-                  className="w-full h-40 p-3 border rounded-lg resize-none text-sm"
+                  className="w-full h-40 p-3 border border-gray-300 rounded-lg resize-none text-sm text-gray-900 bg-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   disabled={loading}
                 />
               </div>
