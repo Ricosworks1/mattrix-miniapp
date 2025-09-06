@@ -21,13 +21,23 @@ const frame = {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Mini-app Starter",
+    title: "Mattrix - Decentralized CRM",
     openGraph: {
-      title: "Mini-app Starter",
-      description: "A starter for Farcastermini-apps",
+      title: "Mattrix - Decentralized CRM",
+      description: "Conference networking CRM powered by Web3",
     },
     other: {
-      "fc:frame": JSON.stringify(frame),
+      "fc:frame": JSON.stringify({
+        ...frame,
+        button: {
+          ...frame.button,
+          title: "Launch Mattrix",
+          action: {
+            ...frame.button.action,
+            name: "Mattrix CRM",
+          },
+        },
+      }),
     },
   };
 }
