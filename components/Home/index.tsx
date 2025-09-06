@@ -33,6 +33,9 @@ export default function Home() {
     autoSignIn: true,
   });
   
+  // Check for demo mode
+  const isDemoMode = typeof window !== 'undefined' && window.location.hash === '#demo-mode'
+  
   const [contacts, setContacts] = useState<Contact[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(false)
@@ -100,11 +103,11 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (isSignedIn) {
+    if (isSignedIn || isDemoMode) {
       fetchContacts()
       fetchStats()
     }
-  }, [isSignedIn])
+  }, [isSignedIn, isDemoMode])
 
   const getPriorityEmoji = (priority: string) => {
     switch (priority) {
@@ -115,8 +118,8 @@ export default function Home() {
     }
   }
 
-  // Show sign-in screen if not authenticated
-  if (!isSignedIn) {
+  // Show simple welcome screen with demo access
+  if (!isSignedIn && !isDemoMode) {
     return (
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-lg p-8 text-center max-w-sm w-full">
@@ -126,13 +129,30 @@ export default function Home() {
           <h1 className="text-2xl font-bold mb-2">Mattrix</h1>
           <p className="text-gray-600 mb-6">Decentralized Conference CRM</p>
           
-          <button
-            onClick={signIn}
-            disabled={isLoading}
-            className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-          >
-            {isLoading ? "Signing in..." : "🚀 Sign in with Farcaster"}
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={signIn}
+              disabled={isLoading}
+              className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              {isLoading ? "Signing in..." : "🚀 Sign in with Farcaster"}
+            </button>
+            
+            <button
+              onClick={() => {
+                // Skip auth for demo - simulate signed in state
+                window.location.hash = '#demo-mode';
+                window.location.reload();
+              }}
+              className="w-full px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-all duration-200"
+            >
+              🎯 Demo Mode (Skip Login)
+            </button>
+          </div>
+          
+          <p className="text-xs text-gray-500 mt-4">
+            Demo mode uses sample data for hackathon presentation
+          </p>
         </div>
       </div>
     );
@@ -154,7 +174,7 @@ export default function Home() {
           </div>
           
           {/* User Info */}
-          {user && (
+          {user ? (
             <div className="mt-4 flex items-center gap-3 bg-white/20 rounded-lg p-3">
               <Image
                 src={user.pfp_url}
@@ -166,6 +186,16 @@ export default function Home() {
               <div>
                 <p className="font-medium text-sm">{user.display_name}</p>
                 <p className="text-blue-200 text-xs">@{user.username}</p>
+              </div>
+            </div>
+          ) : isDemoMode && (
+            <div className="mt-4 flex items-center gap-3 bg-white/20 rounded-lg p-3">
+              <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs">🎯</span>
+              </div>
+              <div>
+                <p className="font-medium text-sm">Demo User</p>
+                <p className="text-blue-200 text-xs">Hackathon Mode</p>
               </div>
             </div>
           )}
